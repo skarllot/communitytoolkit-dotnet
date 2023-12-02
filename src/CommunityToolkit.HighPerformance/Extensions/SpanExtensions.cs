@@ -231,6 +231,85 @@ public static class SpanExtensions
     }
 
     /// <summary>
+    /// Tokenizes the values in the input <see cref="Span{T}"/> instance using two specified separators.
+    /// This extension should be used directly within a <see langword="foreach"/> loop:
+    /// <code>
+    /// Span&lt;char&gt; text = "Hello, world!".ToCharArray();
+    ///
+    /// foreach (var token in text.Tokenize(',', ';'))
+    /// {
+    ///     // Access the tokens here...
+    /// }
+    /// </code>
+    /// The compiler will take care of properly setting up the <see langword="foreach"/> loop with the type returned from this method.
+    /// </summary>
+    /// <typeparam name="T">The type of items in the <see cref="Span{T}"/> to tokenize.</typeparam>
+    /// <param name="span">The source <see cref="Span{T}"/> to tokenize.</param>
+    /// <param name="separator0">One of separators <typeparamref name="T"/> item to use.</param>
+    /// <param name="separator1">One of separators <typeparamref name="T"/> item to use.</param>
+    /// <returns>A wrapper type that will handle the tokenization for <paramref name="span"/>.</returns>
+    /// <remarks>The returned <see cref="SpanTokenizer2{T}"/> value shouldn't be used directly: use this extension in a <see langword="foreach"/> loop.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SpanTokenizer2<T> Tokenize<T>(this Span<T> span, T separator0, T separator1)
+        where T : IEquatable<T>
+    {
+        return new(span, separator0, separator1);
+    }
+
+    /// <summary>
+    /// Tokenizes the values in the input <see cref="Span{T}"/> instance using three specified separators.
+    /// This extension should be used directly within a <see langword="foreach"/> loop:
+    /// <code>
+    /// Span&lt;char&gt; text = "Hello, world!".ToCharArray();
+    ///
+    /// foreach (var token in text.Tokenize(',', ';', ' '))
+    /// {
+    ///     // Access the tokens here...
+    /// }
+    /// </code>
+    /// The compiler will take care of properly setting up the <see langword="foreach"/> loop with the type returned from this method.
+    /// </summary>
+    /// <typeparam name="T">The type of items in the <see cref="Span{T}"/> to tokenize.</typeparam>
+    /// <param name="span">The source <see cref="Span{T}"/> to tokenize.</param>
+    /// <param name="separator0">One of separators <typeparamref name="T"/> item to use.</param>
+    /// <param name="separator1">One of separators <typeparamref name="T"/> item to use.</param>
+    /// <param name="separator2">One of separators <typeparamref name="T"/> item to use.</param>
+    /// <returns>A wrapper type that will handle the tokenization for <paramref name="span"/>.</returns>
+    /// <remarks>The returned <see cref="SpanTokenizer3{T}"/> value shouldn't be used directly: use this extension in a <see langword="foreach"/> loop.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SpanTokenizer3<T> Tokenize<T>(this Span<T> span, T separator0, T separator1, T separator2)
+        where T : IEquatable<T>
+    {
+        return new(span, separator0, separator1, separator2);
+    }
+
+    /// <summary>
+    /// Tokenizes the values in the input <see cref="Span{T}"/> instance using a set of specified separators.
+    /// This extension should be used directly within a <see langword="foreach"/> loop:
+    /// <code>
+    /// Span&lt;char&gt; text = "Hello, world!".ToCharArray();
+    /// Span&lt;char&gt; seps = ",-/ ".ToCharArray();
+    ///
+    /// foreach (var token in text.Tokenize(seps))
+    /// {
+    ///     // Access the tokens here...
+    /// }
+    /// </code>
+    /// The compiler will take care of properly setting up the <see langword="foreach"/> loop with the type returned from this method.
+    /// </summary>
+    /// <typeparam name="T">The type of items in the <see cref="Span{T}"/> to tokenize.</typeparam>
+    /// <param name="span">The source <see cref="Span{T}"/> to tokenize.</param>
+    /// <param name="separators">A set of separators <typeparamref name="T"/> to use.</param>
+    /// <returns>A wrapper type that will handle the tokenization for <paramref name="span"/>.</returns>
+    /// <remarks>The returned <see cref="SpanTokenizerAny{T}"/> value shouldn't be used directly: use this extension in a <see langword="foreach"/> loop.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SpanTokenizerAny<T> Tokenize<T>(this Span<T> span, ReadOnlySpan<T> separators)
+        where T : IEquatable<T>
+    {
+        return new(span, separators);
+    }
+
+    /// <summary>
     /// Gets a content hash from the input <see cref="Span{T}"/> instance using the Djb2 algorithm.
     /// For more info, see the documentation for <see cref="ReadOnlySpanExtensions.GetDjb2HashCode{T}"/>.
     /// </summary>
